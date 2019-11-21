@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import Api from './api';
+import htmlModule from './modules/htmlModule';
+import reactModule from './modules/reactModule';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const api = new Api();
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<App api={api}/>, document.getElementById('root'));
+
+window.api = api;
+
+setTimeout(() => {
+  api.addHtml(htmlModule);
+  api.addReact(reactModule)
+}, 1000);
+

@@ -1,25 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { EmbedOptionsProvider } from './context/embedOptions';
+import Main from './Main';
+import useApi from './useApi';
 
-function App() {
+function App({api}) {
+  const [modules, clear] = useApi(api);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <EmbedOptionsProvider>
+      <Main modules={modules} clear={clear} />
+    </EmbedOptionsProvider>
   );
 }
 
