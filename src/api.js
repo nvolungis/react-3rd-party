@@ -7,6 +7,10 @@ class Api extends EventTarget {
   addHtml({script, callbackName}) {
     this.dispatchEvent(new CustomEvent('add', { detail: { script, callbackName, type: 'html' }}));
   }
+
+  addIframe(html) {
+    this.dispatchEvent(new CustomEvent('add', { detail: { html, type: 'iframe' }}));
+  }
 }
 
 export default Api;
