@@ -18,3 +18,7 @@ code runs in the iframe.
 to start run
 ### `npm install && npm start`
 
+you can click each of the lines as an example of each module affecting app state ( it just toggles a flag )
+
+clicking `clear` will flush the module registry. open the console and execute `run` to bring them back.
+

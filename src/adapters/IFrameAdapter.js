@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-const prepareSource = (src, options) => {
+const prepareSource = (src, data) => {
   const apiSource = `
   <script>
     class Api extends EventTarget {
@@ -13,12 +13,12 @@ const prepareSource = (src, options) => {
         });
       }
 
-      setOption (payload) {
+      setData (payload) {
         window.parent.postMessage({ origin: 'react-iframe', payload }, '*');
       }
 
-      get initialOptions () {
-        return ${JSON.stringify(options)};
+      get initialData () {
+        return ${data};
       }
     }
 
@@ -31,10 +31,10 @@ const prepareSource = (src, options) => {
   return finalSource;
 };
 
-const FrozenIframe = React.memo(React.forwardRef(({src, options}, ref) => {
+const FrozenIframe = React.memo(React.forwardRef(({src, data}, ref) => {
   return (
     <iframe
-      srcDoc={prepareSource(src, options)}
+      srcDoc={prepareSource(src, data)}
       title="iframe"
       ref={ref}
       height={30}
@@ -43,7 +43,7 @@ const FrozenIframe = React.memo(React.forwardRef(({src, options}, ref) => {
   );
 }, (current, previous) => (current.src === previous.src)));
 
-const IframeAdapter = ({ module: { html }, options, setOption }) => {
+const IframeAdapter = ({ module: { html }, data, setData }) => {
   const iframeRef = useRef();
 
   const sendMessage = useCallback((message) => {
@@ -56,8 +56,8 @@ const IframeAdapter = ({ module: { html }, options, setOption }) => {
   }, []);
 
   useEffect(() => {
-    sendMessage(options);
-  }, [sendMessage, options]);
+    sendMessage(data);
+  }, [sendMessage, data]);
 
   useEffect(() => {
     const onWindowMessage = (event) => {
@@ -65,7 +65,7 @@ const IframeAdapter = ({ module: { html }, options, setOption }) => {
       if (!event.data) return;
       if (event.data.origin !== 'react-iframe') return;
 
-      setOption(event.data.payload);
+      setData(event.data.payload);
     };
 
     window.addEventListener('message', onWindowMessage);
@@ -73,9 +73,9 @@ const IframeAdapter = ({ module: { html }, options, setOption }) => {
     return () => {
       window.removeEventListener('message', onWindowMessage);
     };
-  }, [setOption, sendMessage]);
+  }, [setData, sendMessage]);
 
-  return <FrozenIframe src={html} ref={iframeRef} options={options} />
+  return <FrozenIframe src={html} ref={iframeRef} data={data} />
 }
 
 export default IframeAdapter;

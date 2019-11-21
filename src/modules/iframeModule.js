@@ -7,22 +7,22 @@ const script = `
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let options = window.api.initialOptions;
+      let data = window.api.initialData;
 
       const root = Object.assign(document.createElement('div'), {
-        innerHTML: 'hi from iframe - hasPlayButton: ',
+        innerHTML: 'hi from iframe - toggled: ',
       });
 
       const optionValue = Object.assign(document.createElement('span'), {
         id: 'optionvalue',
-        innerHTML: options.hasPlayButton,
+        innerHTML: data,
       });
 
       root.appendChild(optionValue);
 
-      const onChange = ({detail: newOptions }) => {
-        options = newOptions
-        optionValue.innerHTML = options.hasPlayButton;
+      const onChange = ({detail: newData }) => {
+        data = newData
+        optionValue.innerHTML = data;
       };
 
       document.body.appendChild(root);
@@ -30,7 +30,7 @@ const script = `
       window.api.addEventListener('change', onChange);
 
       const onClick = () => {
-        window.api.setOption({key: 'hasPlayButton', value: !options.hasPlayButton });
+        window.api.setData(!data);
       };
 
       root.addEventListener('click', onClick);

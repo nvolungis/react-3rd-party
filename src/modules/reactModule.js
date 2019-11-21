@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ReactComponent = ({options, setOption}) => {
+const ReactComponent = ({data, setData}) => {
   return (
     <div onClick={() => {
-      setOption({key: 'hasPlayButton', value: !options.hasPlayButton});
+      setData(!data);
     }}>
-      hi from react - hasPlayButton: {options.hasPlayButton ? 'true' : 'false'}
+      hi from react - toggled: {data ? 'true' : 'false'}
     </div>
   );
 };

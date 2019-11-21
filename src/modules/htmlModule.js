@@ -3,29 +3,29 @@ const callbackName = 'myPlugin';
 const script = document.createElement('script');
 script.type = "text/javascript";
 script.text = `
-  window.myPlugin = (rootId, initialOptions, setOption, changeNotifier) => {
-    let options = initialOptions;
+  window.myPlugin = (rootId, initialData, setData, changeNotifier) => {
+    let data = initialData;
 
     const root = Object.assign(document.getElementById(rootId), {
-      innerHTML: 'hi from html - hasPlayButton: ',
+      innerHTML: 'hi from html - toggled: ',
     });
 
     const optionValue = Object.assign(document.createElement('span'), {
       id: 'optionvalue',
-      innerHTML: options.hasPlayButton,
+      innerHTML: data,
     });
 
     root.appendChild(optionValue);
 
-    const onChange = ({detail: newOptions }) => {
-      options = newOptions
-      optionValue.innerHTML = options.hasPlayButton;
+    const onChange = ({detail: newData }) => {
+      data = newData;
+      optionValue.innerHTML = data;
     };
 
     changeNotifier.addEventListener('change', onChange);
 
     const onClick = () => {
-      setOption({key: 'hasPlayButton', value: !options.hasPlayButton });
+      setData(!data);
     };
 
     root.addEventListener('click', onClick);
